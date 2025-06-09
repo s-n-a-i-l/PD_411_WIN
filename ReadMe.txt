@@ -1,4 +1,5 @@
 ﻿https://github.com/okovtun/PD_411_WIN.git
+https://www.youtube.com/playlist?list=PLeqyOOqxeiIPLv3EUlwogX7k-Pr1vrOjX
 
 TODO:
 При запуске программы в текстовом поле 'Login' отображается приглашение "Введите имя пользователя".
