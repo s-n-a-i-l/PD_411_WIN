@@ -1,4 +1,5 @@
 ﻿#include<Windows.h>
+#include<stdio.h>
 
 CONST CHAR g_sz_CLASS_NAME[] = "My First Window";	//Абсолютно у любого класса окна есть имя.
 								//Имя класса окна - это самая обычная строка.
@@ -33,6 +34,13 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE pRevInst, LPSTR lpCmdLine, INT
 	}
 
 	//2) Создание окна:
+	INT screen_width = GetSystemMetrics(SM_CXSCREEN);
+	INT screen_height = GetSystemMetrics(SM_CYSCREEN);//https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsystemmetrics#:~:text=The%20height%20of%20the%20screen%20of%20the%20primary%20display%20monitor%2C%20in%20pixels.%20This%20is%20the%20same%20value%20obtained%20by%20calling%20GetDeviceCaps%20as%20follows%3A%20GetDeviceCaps(%20hdcPrimaryMonitor%2C%20VERTRES).
+	//https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsystemmetrics
+	INT window_width = screen_width * .75;
+	INT window_height = screen_height * 3 / 4;
+	INT window_start_x = screen_width / 8;
+	INT window_start_y = screen_height / 8;
 	HWND hwnd = CreateWindowEx
 	(
 		NULL,	//ExStyle
@@ -40,8 +48,8 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE pRevInst, LPSTR lpCmdLine, INT
 		g_sz_CLASS_NAME,	//WindowName (Title)
 		WS_OVERLAPPEDWINDOW,//Такой стиль задается для всех главноых окон. 
 							//Это окно будет родительским для других окон приложения.
-		CW_USEDEFAULT, CW_USEDEFAULT,	//Position
-		CW_USEDEFAULT, CW_USEDEFAULT,	//Size
+		window_start_x, window_start_y,	//Position
+		window_width, window_height,	//Size
 		NULL,	//ParentWindow
 		NULL,	//Строка меню для главного окна, или же ID_-ресурса для дочернего окна
 		hInstance,	//Это экземпляр *.exe-файла нашей программы
@@ -72,6 +80,26 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 		break;
+	case WM_MOVE:
+	case WM_SIZE:
+	{
+		RECT window_rect;	//Rectangle - Прямоугольник
+		GetWindowRect(hwnd, &window_rect);
+		INT window_width = window_rect.right - window_rect.left;
+		INT window_height = window_rect.bottom - window_rect.top;
+		CONST INT SIZE = 256;
+		CHAR sz_title[SIZE] = {};
+		sprintf
+		(
+			sz_title,
+			"%s - Position:%ix%i, Size:%ix%i", 
+			g_sz_CLASS_NAME, 
+			window_rect.left, window_rect.top,
+			window_width, window_height
+		);
+		SendMessage(hwnd, WM_SETTEXT, 0, (LPARAM)sz_title);
+	}
+	break;
 	case WM_COMMAND:
 		break;
 	case WM_DESTROY:
