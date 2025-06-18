@@ -1,7 +1,13 @@
 ﻿https://github.com/okovtun/PD_411_WIN.git
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIPLv3EUlwogX7k-Pr1vrOjX
 
+https://learn.microsoft.com/ru-ru/cpp/c-runtime-library/reference/mbstowcs-mbstowcs-l?view=msvc-170
+
 TODO:
+1. Делаем COMMIT и создаем ветку ButtonsHW;
+2. В созданной ветке создаем кнопки Калькулятора;
+
+DONE:
 1. Окно должно запускаться ровно посередине экрана, как по горизонтали, так и по вертикали,
    и должно занимать ровно 75% экран, незавимо от его разрешения;
 2. В строке заголовка окна отобразить размер окна и его положение на экране;
