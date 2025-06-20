@@ -4,7 +4,7 @@
 CONST CHAR g_sz_CLASS_NAME[] = "MyCalc";
 
 CONST CHAR* g_sz_OPERATIONS[] = { "+", "-", "*", "/" };
-CONST CHAR* g_sz_EDIT[] = { "<-", "C", "="};
+CONST CHAR* g_sz_EDIT[] = { "<-", "C", "=" };
 
 //g_i_ - Global Integer
 CONST INT g_i_BUTTON_SIZE = 50;
@@ -20,10 +20,7 @@ CONST INT g_i_DISPLAY_WIDTH = g_i_BUTTON_SIZE * 5 + g_i_INTERVAL * 4;
 CONST INT g_i_BUTTON_START_X = g_i_START_X;
 CONST INT g_i_BUTTON_START_Y = g_i_START_Y + g_i_DISPLAY_HEIGHT + g_i_INTERVAL;
 
-//Женя, можгу скинуть YouTube-трансляцию, звук через телефон пустите, и все
-//Момент
-//Пробуйте, скажите слышно, или нет...
-
+CONST INT g_SIZE = 256;
 
 INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -110,7 +107,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					NULL, "Button", szDigit,
 					WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 					g_i_BUTTON_START_X + (g_i_BUTTON_SIZE + g_i_INTERVAL)*j,
-					g_i_BUTTON_START_Y + (g_i_BUTTON_SIZE + g_i_INTERVAL)*i/3,
+					g_i_BUTTON_START_Y + (g_i_BUTTON_SIZE + g_i_INTERVAL)*i / 3,
 					g_i_BUTTON_SIZE, g_i_BUTTON_SIZE,
 					hwnd,
 					(HMENU)iDigit,
@@ -136,7 +133,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			NULL, "Button", ".",
 			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 			g_i_BUTTON_START_X + g_i_BUTTON_SPACE * 2,
-			g_i_BUTTON_START_Y+g_i_BUTTON_SPACE * 3,
+			g_i_BUTTON_START_Y + g_i_BUTTON_SPACE * 3,
 			g_i_BUTTON_SIZE, g_i_BUTTON_SIZE,
 			hwnd,
 			(HMENU)IDC_BUTTON_POINT,
@@ -176,7 +173,20 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	break;
 	case WM_COMMAND:
-		break;
+	{
+		CHAR szDisplay[g_SIZE] = {};
+		CHAR szDigit[2] = {};
+		HWND hEditDisplay = GetDlgItem(hwnd, IDC_EDIT_DISPLAY);
+		if (LOWORD(wParam) >= IDC_BUTTON_0 && LOWORD(wParam) <= IDC_BUTTON_9)
+		{
+			szDigit[0] = LOWORD(wParam) - IDC_BUTTON_0 + '0';
+			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
+			if (szDisplay[0] == '0' && szDisplay[1] != '.')szDisplay[0] = 0;
+			strcat(szDisplay, szDigit);
+			SendMessage(hEditDisplay, WM_SETTEXT, 0, (LPARAM)szDisplay);
+		}
+	}
+	break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
