@@ -3,6 +3,9 @@ https://www.youtube.com/playlist?list=PLeqyOOqxeiIPLv3EUlwogX7k-Pr1vrOjX
 
 https://learn.microsoft.com/ru-ru/cpp/c-runtime-library/reference/mbstowcs-mbstowcs-l?view=msvc-170
 
+Messages:
+https://learn.microsoft.com/en-us/windows/win32/winmsg/windowing
+
 TODO:
 1. Делаем COMMIT и создаем ветку ButtonsHW;
 2. В созданной ветке создаем кнопки Калькулятора;
