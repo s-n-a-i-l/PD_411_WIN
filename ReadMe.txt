@@ -7,6 +7,10 @@ Messages:
 https://learn.microsoft.com/en-us/windows/win32/winmsg/windowing
 
 TODO:
+1. Делаем COMMIT и создаем ветку CalculationsHW;
+2. Организовать вычисления;
+
+DONE:
 1. Делаем COMMIT и создаем ветку ButtonsHW;
 2. В созданной ветке создаем кнопки Калькулятора;
 
