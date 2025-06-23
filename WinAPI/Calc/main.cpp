@@ -212,17 +212,33 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
 			if (input && a == DBL_MIN)a = atof(szDisplay);	//https://legacy.cplusplus.com/reference/cstdlib/atof/
 			if (input)b = atof(szDisplay);
+			//else break;
 			//(input && a == DBL_MIN ? a : b) = atof(szDisplay);
 			input = FALSE;
-			SendMessage(hwnd, WM_COMMAND, (WPARAM)operation, 0);	//выполняем предыдущую операцию
+			SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_EQUAL, 0);	//выполняем предыдущую операцию
 			operation = LOWORD(wParam);		//и только после этого запоминаем введенную операцию
 			input_operation = TRUE;
+		}
+		if (LOWORD(wParam) == IDC_BUTTON_BSP)
+		{
+			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
+			if (strlen(szDisplay) > 1)szDisplay[strlen(szDisplay) - 1] = 0;
+			else szDisplay[0] = '0';
+			SendMessage(hEditDisplay, WM_SETTEXT, 0, (LPARAM)szDisplay);
+		}
+		if (LOWORD(wParam) == IDC_BUTTON_CLR)
+		{
+			a = b = DBL_MIN;
+			operation = 0;
+			input = input_operation = FALSE;
+			SendMessage(hEditDisplay, WM_SETTEXT, 0, (LPARAM)"0");
 		}
 		if (LOWORD(wParam) == IDC_BUTTON_EQUAL)
 		{
 			SendMessage(hEditDisplay, WM_GETTEXT, g_SIZE, (LPARAM)szDisplay);
 			if (input && a == DBL_MIN)a = atof(szDisplay);	//https://legacy.cplusplus.com/reference/cstdlib/atof/
 			if (input) b = atof(szDisplay);
+			if(a==DBL_MIN) break;
 			//(input && a == DBL_MIN ? a : b) = atof(szDisplay);
 			input = FALSE;
 			switch (operation)
