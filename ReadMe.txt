@@ -7,6 +7,9 @@ Messages:
 https://learn.microsoft.com/en-us/windows/win32/winmsg/windowing
 
 TODO:
+Добить кнопки;
+
+DONE:
 1. Прикрутить значки к кнопкам;
 
 DONE:
