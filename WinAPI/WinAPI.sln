@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.36001.139
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinAPI", "WinAPI\WinAPI.vcxproj", "{95469E51-0EC0-4C43-9EFE-2FC2FF1AEA5A}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MainWindow", "MainWindow\MainWindow.vcxproj", "{898CEFE3-0E0B-4E71-9841-03C9E3EF7433}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calc", "Calc\Calc.vcxproj", "{42D4A5A8-54E7-44E6-AAF8-09E095098D6B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Buttons", "Buttons\Buttons.vcxproj", "{A63E330A-8F45-434E-A9BB-AB271F8592A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,14 @@ Global
 		{42D4A5A8-54E7-44E6-AAF8-09E095098D6B}.Release|x64.Build.0 = Release|x64
 		{42D4A5A8-54E7-44E6-AAF8-09E095098D6B}.Release|x86.ActiveCfg = Release|Win32
 		{42D4A5A8-54E7-44E6-AAF8-09E095098D6B}.Release|x86.Build.0 = Release|Win32
+		{A63E330A-8F45-434E-A9BB-AB271F8592A2}.Debug|x64.ActiveCfg = Debug|x64
+		{A63E330A-8F45-434E-A9BB-AB271F8592A2}.Debug|x64.Build.0 = Debug|x64
+		{A63E330A-8F45-434E-A9BB-AB271F8592A2}.Debug|x86.ActiveCfg = Debug|Win32
+		{A63E330A-8F45-434E-A9BB-AB271F8592A2}.Debug|x86.Build.0 = Debug|Win32
+		{A63E330A-8F45-434E-A9BB-AB271F8592A2}.Release|x64.ActiveCfg = Release|x64
+		{A63E330A-8F45-434E-A9BB-AB271F8592A2}.Release|x64.Build.0 = Release|x64
+		{A63E330A-8F45-434E-A9BB-AB271F8592A2}.Release|x86.ActiveCfg = Release|Win32
+		{A63E330A-8F45-434E-A9BB-AB271F8592A2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

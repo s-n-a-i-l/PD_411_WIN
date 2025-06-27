@@ -101,7 +101,8 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		AllocConsole();
 		freopen("CONOUT$", "w", stdout);
-		setlocale(LC_ALL, "");
+		system("chcp 1251");
+		//setlocale(LC_ALL, "");
 		HWND hEditDisplay = CreateWindowEx
 		(
 			NULL, "Edit", "0",
@@ -196,7 +197,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//MessageBox(hwnd, sz_error, "", MB_OK);
 		//SendMessage(hwnd, WM_SETICON, 0, (LPARAM)hIcon);
 		//SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hIcon);
-		SetSkin(hwnd, "square_blue");
+		SetSkin(hwnd, "metal_mistral");
 	}
 	break;
 	case WM_COMMAND:
