@@ -20,7 +20,7 @@ CONST INT g_i_BUTTON_SPACE = g_i_BUTTON_SIZE + g_i_INTERVAL;
 CONST INT g_i_BUTTON_SIZE_DOUBLE = g_i_BUTTON_SIZE * 2 + g_i_INTERVAL;
 CONST INT g_i_START_X = 10;
 CONST INT g_i_START_Y = 10;
-CONST INT g_i_DISPLAY_HEIGHT = 22;
+CONST INT g_i_DISPLAY_HEIGHT = 48;
 CONST INT g_i_DISPLAY_WIDTH = g_i_BUTTON_SIZE * 5 + g_i_INTERVAL * 4;
 CONST INT g_i_BUTTON_START_X = g_i_START_X;
 CONST INT g_i_BUTTON_START_Y = g_i_START_Y + g_i_DISPLAY_HEIGHT + g_i_INTERVAL;
@@ -117,8 +117,27 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
+
+		//ШРИФТ
+		AddFontResourceEx("fonts\\Dezilt.ttf", FR_PRIVATE, 0);
+		HFONT hFont = CreateFont
+		(
+			g_i_DISPLAY_HEIGHT - 2, g_i_DISPLAY_HEIGHT / 3,
+			0, 0,
+			FW_BOLD,
+			FALSE, FALSE, FALSE,
+			DEFAULT_CHARSET,
+			OUT_TT_PRECIS,
+			CLIP_DEFAULT_PRECIS,
+			ANTIALIASED_QUALITY,
+			FF_DONTCARE,
+			"Dezilt"
+		);
+		SendMessage(hEditDisplay, WM_SETFONT,(WPARAM)hFont,TRUE);
+
 		INT iDigit = IDC_BUTTON_1;
 		CHAR szDigit[2] = {};
+
 		for (int i = 6; i >= 0; i -= 3)
 		{
 			for (int j = 0; j < 3; j++)
@@ -139,6 +158,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				iDigit++;
 			}
 		}
+
 		CreateWindowEx
 		(
 			NULL, "Button", "0",
@@ -150,6 +170,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
+
 		CreateWindowEx
 		(
 			NULL, "Button", ".",
@@ -201,7 +222,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//SendMessage(hwnd, WM_SETICON, 0, (LPARAM)hIcon);
 		//SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hIcon);
 		SetSkinFromDLL(hwnd, "all_random");
-		SetFont(hwnd, "fonts\\Dezilt.ttf");
+		//SetFont(hwnd, "fonts\\Dezilt.ttf");
 
 	}
 	break;
@@ -427,7 +448,7 @@ VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[])
 			g_i_BUTTON_SIZE,
 			LR_LOADFROMFILE
 		);
-		//PrintLastError(GetLastError());
+		our::LastError::PrintLastError(GetLastError());
 		//MessageBox(hwnd, lpszMessage, "", MB_OK);
 		SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0 + i), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bmpIcon);
 	}
@@ -449,35 +470,35 @@ VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[])
 			i == IDC_BUTTON_EQUAL ? g_i_BUTTON_SIZE_DOUBLE : g_i_BUTTON_SIZE,
 			LR_SHARED
 		);
-		//our::LastError::PrintLastError(GetLastError());
+		our::LastError::PrintLastError(GetLastError());
 		SendMessage(GetDlgItem(hwnd, i), BM_SETIMAGE, IMAGE_BITMAP,(LPARAM)bmpButton);
 		
 	}
 	FreeLibrary(hButtonsModule);
 }
-VOID SetFont(HWND hwnd, CONST CHAR sz_font[])
-{
-	int Font = AddFontResourceEx(sz_font, FR_PRIVATE, 0);
-	if (Font == 0)
-	{
-		MessageBoxA(hwnd, "Не удалось загрузить шрифт", "Ошибка", MB_ICONERROR);
-		return;
-	}
-
-	HFONT hFont = CreateFont
-	(
-		24, 0, 0, 0,
-		FW_NORMAL, FALSE, FALSE, FALSE,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
-		CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-		DEFAULT_PITCH | FF_DONTCARE,
-		"exwayer"
-	);
-
-	for (int i = IDC_BUTTON_0; i <= IDC_BUTTON_EQUAL; ++i) 
-	{
-		HWND hCtrl = GetDlgItem(hwnd, i);
-		SendMessage(hCtrl, WM_SETFONT, (WPARAM)hFont, TRUE);
-	}
-}
+//VOID SetFont(HWND hwnd, CONST CHAR sz_font[]) НЕ РАБОТАЕТ((
+//{
+//	int Font = AddFontResourceEx(sz_font, FR_PRIVATE, 0);
+//	if (Font == 0)
+//	{
+//		MessageBoxA(hwnd, "Не удалось загрузить шрифт", "Ошибка", MB_ICONERROR);
+//		return;
+//	}
+//
+//	HFONT hFont = CreateFont
+//	(
+//		24, 0, 0, 0,
+//		FW_NORMAL, FALSE, FALSE, FALSE,
+//		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+//		CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+//		DEFAULT_PITCH | FF_DONTCARE,
+//		"sz_font"
+//	);
+//
+//	for (int i = IDC_BUTTON_0; i <= IDC_BUTTON_EQUAL; ++i) 
+//	{
+//		HWND hCtrl = GetDlgItem(hwnd, i);
+//		SendMessage(hCtrl, WM_SETFONT, (WPARAM)hFont, TRUE);
+//	}
+//}
 

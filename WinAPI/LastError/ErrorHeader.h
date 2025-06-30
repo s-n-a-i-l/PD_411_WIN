@@ -7,9 +7,9 @@ namespace our
 {
 	class LastError
 	{
-	public:
-		LPSTR FormatLastError(DWORD dwErrorID);
-		VOID PrintLastError(DWORD dwErrorID);
+	    public:
+		static  LPSTR __stdcall FormatLastError(DWORD dwErrorID);
+		static  VOID __stdcall PrintLastError(DWORD dwErrorID);
 	};
 }
 
