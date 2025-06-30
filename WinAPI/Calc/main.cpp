@@ -398,7 +398,29 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 	}
 	break;
+	case WM_CONTEXTMENU:
+	{
+		HMENU hMainMenu = CreatePopupMenu();
+		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_EXIT, "Exit");
+		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
+		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_SQUARE_BLUE, "Square_blue");
+		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_METAL_MISTRAL, "Metal_Mistral");
+		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_ALL_RANDOM, "All_Random");
+	                                                                              // x y         мышки
+		BOOL item = TrackPopupMenuEx(hMainMenu, TPM_RETURNCMD | TPM_LEFTALIGN | TPM_BOTTOMALIGN, LOWORD(lParam), HIWORD(lParam), hwnd, NULL);
 
+		switch(item)
+		{
+		case CM_SQUARE_BLUE:
+		    SetSkinFromDLL(hwnd, "square_blue"); break;
+		case CM_METAL_MISTRAL:
+			SetSkinFromDLL(hwnd, "metal_mistral"); break;
+		case CM_ALL_RANDOM:
+			SetSkinFromDLL(hwnd, "all_random"); break;
+		}
+
+	}
+	break;
 	case WM_DESTROY:
 		FreeConsole();
 		PostQuitMessage(0);
