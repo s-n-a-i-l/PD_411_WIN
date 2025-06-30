@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<iostream>
 #include"resource.h"
+#include"ErrorHeader.h"
 
 #define delimiter "\n-------------------------------------------\n"
 CONST CHAR g_sz_CLASS_NAME[] = "MyCalc";
@@ -32,7 +33,7 @@ CONST INT g_SIZE = 256;
 INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[]);
 VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[]);
-
+VOID SetFont(HWND hwnd, CONST CHAR sz_font[]);
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, INT nCmdShow)
 {
@@ -200,11 +201,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//SendMessage(hwnd, WM_SETICON, 0, (LPARAM)hIcon);
 		//SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hIcon);
 		SetSkinFromDLL(hwnd, "all_random");
-
-		/*HFONT hFont = CreateFont
-		(
-
-		);*/
+		SetFont(hwnd, "fonts\\Dezilt.ttf");
 
 	}
 	break;
@@ -392,28 +389,28 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	return FALSE;
 }
-LPSTR FormatLastError(DWORD dwErrorID)
-{
-	//DWORD dwErrorID = GetLastError();
-	LPSTR lpszMessage = NULL;
-	FormatMessage
-	(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL,
-		dwErrorID,
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_RUSSIAN_RUSSIA),
-		(LPSTR)&lpszMessage,
-		NULL,
-		NULL
-	);
-	return lpszMessage;
-}
-VOID PrintLastError(DWORD dwErrorID)
-{
-	LPSTR lpszMessage = FormatLastError(GetLastError());
-	std::cout << lpszMessage << std::endl;
-	LocalFree(lpszMessage);
-}
+//LPSTR FormatLastError(DWORD dwErrorID)
+//{
+//	//DWORD dwErrorID = GetLastError();
+//	LPSTR lpszMessage = NULL;
+//	FormatMessage
+//	(
+//		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+//		NULL,
+//		dwErrorID,
+//		MAKELANGID(LANG_NEUTRAL, SUBLANG_RUSSIAN_RUSSIA),
+//		(LPSTR)&lpszMessage,
+//		NULL,
+//		NULL
+//	);
+//	return lpszMessage;
+//}
+//VOID PrintLastError(DWORD dwErrorID)
+//{
+//	LPSTR lpszMessage = FormatLastError(GetLastError());
+//	std::cout << lpszMessage << std::endl;
+//	LocalFree(lpszMessage);
+//}
 VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[])
 {
 	std::cout << "SetSkin()" << std::endl;
@@ -430,7 +427,7 @@ VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[])
 			g_i_BUTTON_SIZE,
 			LR_LOADFROMFILE
 		);
-		PrintLastError(GetLastError());
+		//PrintLastError(GetLastError());
 		//MessageBox(hwnd, lpszMessage, "", MB_OK);
 		SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0 + i), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bmpIcon);
 	}
@@ -452,9 +449,35 @@ VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[])
 			i == IDC_BUTTON_EQUAL ? g_i_BUTTON_SIZE_DOUBLE : g_i_BUTTON_SIZE,
 			LR_SHARED
 		);
-		PrintLastError(GetLastError());
+		//our::LastError::PrintLastError(GetLastError());
 		SendMessage(GetDlgItem(hwnd, i), BM_SETIMAGE, IMAGE_BITMAP,(LPARAM)bmpButton);
 		
 	}
 	FreeLibrary(hButtonsModule);
 }
+VOID SetFont(HWND hwnd, CONST CHAR sz_font[])
+{
+	int Font = AddFontResourceEx(sz_font, FR_PRIVATE, 0);
+	if (Font == 0)
+	{
+		MessageBoxA(hwnd, "Не удалось загрузить шрифт", "Ошибка", MB_ICONERROR);
+		return;
+	}
+
+	HFONT hFont = CreateFont
+	(
+		24, 0, 0, 0,
+		FW_NORMAL, FALSE, FALSE, FALSE,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+		CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+		DEFAULT_PITCH | FF_DONTCARE,
+		"exwayer"
+	);
+
+	for (int i = IDC_BUTTON_0; i <= IDC_BUTTON_EQUAL; ++i) 
+	{
+		HWND hCtrl = GetDlgItem(hwnd, i);
+		SendMessage(hCtrl, WM_SETFONT, (WPARAM)hFont, TRUE);
+	}
+}
+
