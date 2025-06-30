@@ -199,7 +199,13 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//MessageBox(hwnd, sz_error, "", MB_OK);
 		//SendMessage(hwnd, WM_SETICON, 0, (LPARAM)hIcon);
 		//SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hIcon);
-		SetSkinFromDLL(hwnd, "square_blue");
+		SetSkinFromDLL(hwnd, "all_random");
+
+		/*HFONT hFont = CreateFont
+		(
+
+		);*/
+
 	}
 	break;
 	case WM_COMMAND:
