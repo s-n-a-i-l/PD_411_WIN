@@ -3,7 +3,8 @@
 #include<stdio.h>
 #include<iostream>
 #include"resource.h"
-#include"ErrorHeader.h"
+#include"fonts_res.h"
+//#include"ErrorHeader.h"
 #include"Constants.h"
 
 //#define delimiter "\n-------------------------------------------\n"
@@ -34,7 +35,7 @@
 INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[]);
 VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[]);
-VOID SetFont(HWND hwnd, CONST CHAR sz_font[]);
+VOID SetFontFromDLL(HWND hEditDisplay, CONST CHAR sz_font[]);
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, INT nCmdShow)
 {
@@ -121,7 +122,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		);
 
 		//ШРИФТ
-		AddFontResourceEx("fonts\\Dezilt.ttf", FR_PRIVATE, 0);
+		/*AddFontResourceEx("fonts\\Revoinex.ttf", FR_PRIVATE, 0);
 		HFONT hFont = CreateFont
 		(
 			g_i_DISPLAY_HEIGHT - 2, g_i_DISPLAY_HEIGHT / 3,
@@ -133,9 +134,9 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			CLIP_DEFAULT_PRECIS,
 			ANTIALIASED_QUALITY,
 			FF_DONTCARE,
-			"Dezilt"
+			"Revoinex"
 		);
-		SendMessage(hEditDisplay, WM_SETFONT,(WPARAM)hFont,TRUE);
+		SendMessage(hEditDisplay, WM_SETFONT,(WPARAM)hFont,TRUE);*/
 
 		INT iDigit = IDC_BUTTON_1;
 		CHAR szDigit[2] = {};
@@ -149,8 +150,8 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				(
 					NULL, "Button", szDigit,
 					WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_BITMAP,
-					g_i_BUTTON_START_X + (g_i_BUTTON_SIZE + g_i_INTERVAL)*j,
-					g_i_BUTTON_START_Y + (g_i_BUTTON_SIZE + g_i_INTERVAL)*i / 3,
+					g_i_BUTTON_START_X + (g_i_BUTTON_SIZE + g_i_INTERVAL) * j,
+					g_i_BUTTON_START_Y + (g_i_BUTTON_SIZE + g_i_INTERVAL) * i / 3,
 					g_i_BUTTON_SIZE, g_i_BUTTON_SIZE,
 					hwnd,
 					(HMENU)iDigit,
@@ -224,11 +225,12 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//SendMessage(hwnd, WM_SETICON, 0, (LPARAM)hIcon);
 		//SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hIcon);
 		SetSkinFromDLL(hwnd, "all_random");
+		SetFontFromDLL(hEditDisplay, "Revoinex");
 		//SetFont(hwnd, "fonts\\Dezilt.ttf");
 
 	}
 	break;
-	case WM_CTLCOLOREDIT: 
+	case WM_CTLCOLOREDIT:
 	{
 		HDC hdcEdit = (HDC)wParam;//HDC - HANDLER TO DEVICE CONTEXT
 		SetBkColor(hdcEdit, g_DISPLAY_BACGROUND[index]);//color fona
@@ -309,7 +311,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			sprintf(szDisplay, "%g", a);
 			SendMessage(hEditDisplay, WM_SETTEXT, 0, (LPARAM)szDisplay);
 		}
-		if(LOWORD(wParam) == IDC_EDIT_DISPLAY && HIWORD(wParam) == EN_SETFOCUS)SetFocus(hwnd);
+		if (LOWORD(wParam) == IDC_EDIT_DISPLAY && HIWORD(wParam) == EN_SETFOCUS)SetFocus(hwnd);
 
 	}
 	break;
@@ -422,14 +424,14 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_SQUARE_BLUE, "Square_blue");
 		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_METAL_MISTRAL, "Metal_Mistral");
 		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_ALL_RANDOM, "All_Random");
-	                                                                              // x y         мышки
+		// x y         мышки
 		BOOL item = TrackPopupMenuEx(hMainMenu, TPM_RETURNCMD | TPM_LEFTALIGN | TPM_BOTTOMALIGN, LOWORD(lParam), HIWORD(lParam), hwnd, NULL);
 
-		switch(item)
+		switch (item)
 		{
 		case CM_EXIT: SendMessage(hwnd, WM_DESTROY, 0, 0);break;
 		case CM_SQUARE_BLUE:
-		    SetSkinFromDLL(hwnd, "square_blue"); break;
+			SetSkinFromDLL(hwnd, "square_blue"); break;
 		case CM_METAL_MISTRAL:
 			SetSkinFromDLL(hwnd, "metal_mistral"); break;
 		case CM_ALL_RANDOM:
@@ -447,11 +449,11 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			ReleaseDC(hEditDisplay, hdcEditDisplay);//контекст устройства обязательно нужно освобождать
 			SetFocus(hEditDisplay);
 		}
-			/*CHAR sz_buffer[g_SIZE] = {};
-			SendMessage(hwnd, WM_GETTEXT, g_SIZE, (LPARAM)sz_buffer);
-			SendMessage(hwnd, WM_GETTEXT, g_SIZE, (LPARAM)" ");
-			SendMessage(hwnd, WM_GETTEXT, 0, (LPARAM)sz_buffer);*/
-		
+		/*CHAR sz_buffer[g_SIZE] = {};
+		SendMessage(hwnd, WM_GETTEXT, g_SIZE, (LPARAM)sz_buffer);
+		SendMessage(hwnd, WM_GETTEXT, g_SIZE, (LPARAM)" ");
+		SendMessage(hwnd, WM_GETTEXT, 0, (LPARAM)sz_buffer);*/
+
 	}
 	break;
 	case WM_DESTROY:
@@ -503,7 +505,7 @@ VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[])
 			g_i_BUTTON_SIZE,
 			LR_LOADFROMFILE
 		);
-		our::LastError::PrintLastError(GetLastError());
+		//our::LastError::PrintLastError(GetLastError());
 		//MessageBox(hwnd, lpszMessage, "", MB_OK);
 		SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0 + i), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bmpIcon);
 	}
@@ -511,25 +513,48 @@ VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[])
 }
 VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[])
 {
-	 HMODULE hButtonsModule = LoadLibrary(sz_skin);
-	 //без этого не ворк, принципиально важно чтоб длл файл находился в одном каталоге с нашим ехе файлом
-	// HINSTANCE hButtons = GetModuleHandle("Buttons.dll");
-	for( int i = IDC_BUTTON_0; i<=IDC_BUTTON_EQUAL; i++)
+	HMODULE hButtonsModule = LoadLibrary(sz_skin);
+	//без этого не ворк, принципиально важно чтоб длл файл находился в одном каталоге с нашим ехе файлом
+   // HINSTANCE hButtons = GetModuleHandle("Buttons.dll");
+	for (int i = IDC_BUTTON_0; i <= IDC_BUTTON_EQUAL; i++)
 	{
 		HBITMAP bmpButton = (HBITMAP)LoadImage
-		(   
+		(
 			hButtonsModule,
 			MAKEINTRESOURCE(i),
 			IMAGE_BITMAP,
-			i == IDC_BUTTON_0 ?		g_i_BUTTON_SIZE_DOUBLE : g_i_BUTTON_SIZE,
+			i == IDC_BUTTON_0 ? g_i_BUTTON_SIZE_DOUBLE : g_i_BUTTON_SIZE,
 			i == IDC_BUTTON_EQUAL ? g_i_BUTTON_SIZE_DOUBLE : g_i_BUTTON_SIZE,
 			LR_SHARED
 		);
-		our::LastError::PrintLastError(GetLastError());
-		SendMessage(GetDlgItem(hwnd, i), BM_SETIMAGE, IMAGE_BITMAP,(LPARAM)bmpButton);
-		
+		//our::LastError::PrintLastError(GetLastError());
+		SendMessage(GetDlgItem(hwnd, i), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)bmpButton);
+
 	}
 	FreeLibrary(hButtonsModule);
+}
+VOID SetFontFromDLL(HWND hEditDisplay, CONST CHAR sz_font[])
+{
+	//AddFontResourceEx("fonts\\Revoinex.ttf", FR_PRIVATE, 0);
+	HMODULE hFontMod = LoadLibrary("Revoinex.dll");
+	if (!hFontMod) {
+		MessageBox(hEditDisplay, "Не удалось загрузить Fonts.dll", "Ошибка", MB_ICONERROR);
+		return;
+	}
+
+	HFONT hFont = CreateFont(
+		g_i_DISPLAY_HEIGHT - 2, g_i_DISPLAY_HEIGHT / 3,
+		0, 0, FW_BOLD,
+		FALSE, FALSE, FALSE,
+		DEFAULT_CHARSET,
+		OUT_TT_PRECIS,
+		CLIP_DEFAULT_PRECIS,
+		ANTIALIASED_QUALITY,
+		FF_DONTCARE,
+		sz_font
+	);
+
+	SendMessage(hEditDisplay, WM_SETFONT, (WPARAM)hFont, TRUE);
 }
 //VOID SetFont(HWND hwnd, CONST CHAR sz_font[]) НЕ РАБОТАЕТ((
 //{
