@@ -31,3 +31,5 @@ CONST COLORREF g_DISPLAY_BACGROUND[] = { RGB(0,0,100),RGB(100,100,100)};
 CONST COLORREF g_DISPLAY_FOREGROUND[] = { RGB(255,0,100),RGB(0,255,0)};
 
 CONST CHAR* g_sz_SKIN[] = { "square_blue", "metal_mistral","all_random" };
+
+CONST CHAR* g_sz_FONT[] = { "Revoinex.TTF","Kaijuz.TTF" ,"digital-7 (mono).TTF" };

@@ -3,7 +3,6 @@
 #include<stdio.h>
 #include<iostream>
 #include"resource.h"
-#include"fonts_res.h"
 //#include"ErrorHeader.h"
 #include"Constants.h"
 
@@ -35,7 +34,9 @@
 INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 VOID SetSkin(HWND hwnd, CONST CHAR sz_skin[]);
 VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[]);
-VOID SetFontFromDLL(HWND hEditDisplay, CONST CHAR sz_font[]);
+VOID LoadFontFromDLL(HMODULE hFontModule, INT resourseID);
+VOID LoadFontsFromDLL(HMODULE hFontModule);
+VOID SetFont(HWND hwnd, CONST CHAR font_name[]);
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, INT nCmdShow)
 {
@@ -100,6 +101,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	static BOOL input = FALSE;				//Пользователь ввел число
 	static BOOL input_operation = FALSE;	//Пользователь ввел знак операции
 	static INT index = 0;
+	static INT font_index = 0;
 
 	switch (uMsg)
 	{
@@ -225,8 +227,11 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//SendMessage(hwnd, WM_SETICON, 0, (LPARAM)hIcon);
 		//SendMessage(GetDlgItem(hwnd, IDC_BUTTON_0), BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hIcon);
 		SetSkinFromDLL(hwnd, "all_random");
-		SetFontFromDLL(hEditDisplay, "Revoinex");
-		//SetFont(hwnd, "fonts\\Dezilt.ttf");
+		HMODULE hFonts = LoadLibrary("Fonts_only_DLL.dll");
+		LoadFontsFromDLL(hFonts);
+		SetFont(hwnd,g_sz_FONT[font_index]);
+		//LoadFontFromDLL(hEditDisplay, "Revoinex");
+		//SetFont(hwnd, "fonts\\Revoinex.ttf");
 
 	}
 	break;
@@ -533,29 +538,43 @@ VOID SetSkinFromDLL(HWND hwnd, CONST CHAR sz_skin[])
 	}
 	FreeLibrary(hButtonsModule);
 }
-VOID SetFontFromDLL(HWND hEditDisplay, CONST CHAR sz_font[])
+VOID LoadFontFromDLL(HMODULE hFontModule, INT resourseID)
 {
-	//AddFontResourceEx("fonts\\Revoinex.ttf", FR_PRIVATE, 0);
-	HMODULE hFontMod = LoadLibrary("Revoinex.dll");
-	if (!hFontMod) {
-		MessageBox(hEditDisplay, "Не удалось загрузить Fonts.dll", "Ошибка", MB_ICONERROR);
-		return;
-	}
+	HRSRC hFntSes = FindResource(hFontModule, MAKEINTRESOURCE(resourseID), MAKEINTRESOURCE(RT_FONT));
+	HGLOBAL hFntMem = LoadResource(hFontModule, hFntSes);
+	VOID* fntData = LockResource(hFntMem);
+	DWORD nFonts = 0;
+	DWORD len = SizeofResource(hFontModule, hFntSes);
+	AddFontMemResourceEx(fntData, len, NULL, &nFonts);
 
-	HFONT hFont = CreateFont(
+}
+VOID LoadFontsFromDLL(HMODULE hFontModule)
+{
+   for(int i = 401;i<=403;i++)
+   {
+ 	LoadFontFromDLL(hFontModule,i);
+   }
+}
+VOID SetFont(HWND hwnd, CONST CHAR font_name[])
+{
+	HWND hEditDisplay = GetDlgItem(hwnd, IDC_EDIT_DISPLAY);
+	//AddFontResourceEx("fonts\\Revoinex.ttf", FR_PRIVATE, 0);
+	HFONT hFont = CreateFont
+	(
 		g_i_DISPLAY_HEIGHT - 2, g_i_DISPLAY_HEIGHT / 3,
-		0, 0, FW_BOLD,
+		0, 0,
+		FW_BOLD,
 		FALSE, FALSE, FALSE,
 		DEFAULT_CHARSET,
 		OUT_TT_PRECIS,
 		CLIP_DEFAULT_PRECIS,
 		ANTIALIASED_QUALITY,
 		FF_DONTCARE,
-		sz_font
+		font_name
 	);
-
 	SendMessage(hEditDisplay, WM_SETFONT, (WPARAM)hFont, TRUE);
 }
+
 //VOID SetFont(HWND hwnd, CONST CHAR sz_font[]) НЕ РАБОТАЕТ((
 //{
 //	int Font = AddFontResourceEx(sz_font, FR_PRIVATE, 0);

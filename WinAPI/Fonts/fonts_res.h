@@ -2,9 +2,9 @@
 // Microsoft Visual C++ generated include file.
 // Used by Fonts.rc
 //
-#define IDF_FONT_1                     401
-#define IDF_FONT_2                     402
-#define IDF_FONT_3                     403
+
+#define IDF_FONT_1                    401
+#define IDF_FONT_2                    402
 
 
 
