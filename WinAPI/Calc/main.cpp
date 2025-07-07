@@ -214,7 +214,7 @@ INT WINAPI WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				g_i_BUTTON_SIZE, i < 2 ? g_i_BUTTON_SIZE : g_i_BUTTON_SIZE_DOUBLE,
 				hwnd,
 				(HMENU)(IDC_BUTTON_BSP + i),
-				GetModuleHandle(NULL),
+				GetModuleHandle(NULL),   
 				NULL
 			);
 		}
